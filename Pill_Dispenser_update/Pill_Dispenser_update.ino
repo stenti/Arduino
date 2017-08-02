@@ -82,15 +82,19 @@ void loop(){
 //    
 //    while(!digitalRead(requestPill));
 
-    while(!pillState){
+//    while(!pillState){
       WriteRegister(5, ENABLE & CLOCKWISE & STEP_ROTATION & FULL & HOLD_OFF);
       WriteRegister(6, steps_MSB);
       WriteRegister(7, steps_LSB); 
       WriteRegister(8, quarter_milli); // (i.e. 5mS / 0.25mS) = 20
       WriteRegister(17, UPDATE); // Global update
-      delay((step_time*ONE_REVOLUTION)+1900);  //  
-    }
-    
+//      delay((step_time*ONE_REVOLUTION)+1900);  //  
+//    }
+      while(!pillState);
+      delay(1500);
+      WriteRegister(5, DISABLE & CLOCKWISE & CONSTANT_ROTATION & FULL & HOLD_OFF);
+      WriteRegister(17, UPDATE); // Global update
+  
     digitalWrite(ackPill,1);
     while(digitalRead(requestPill));
     digitalWrite(ackPill,0);
@@ -99,7 +103,6 @@ void loop(){
 /*============= FUNCTIONS =================================================*/
 
 void setup(){  
-
   pinMode(interruptPin, INPUT_PULLUP);
   pinMode(requestPill, INPUT);
   pinMode(ackPill, OUTPUT);
@@ -120,17 +123,18 @@ void setup(){
   WriteRegister(8, quarter_milli); // (i.e. 5mS / 0.25mS) = 20
   WriteRegister(17, UPDATE); // Global update
   while(!pillState);
+  delay(1500);
   WriteRegister(5, DISABLE & CLOCKWISE & CONSTANT_ROTATION & FULL & HOLD_OFF);
   WriteRegister(17, UPDATE); // Global update
 
 
-  WriteRegister(5, ENABLE & CLOCKWISE & STEP_ROTATION & FULL & HOLD_OFF);
-  WriteRegister(6, 1);
-  WriteRegister(7, 0); 
-  WriteRegister(8, quarter_milli); // (i.e. 5mS / 0.25mS) = 20
-  WriteRegister(17, UPDATE); // Global update
-
-  delay((step_time*ONE_REVOLUTION)+1100);  //
+//  WriteRegister(5, ENABLE & CLOCKWISE & STEP_ROTATION & FULL & HOLD_OFF);
+//  WriteRegister(6, 1);
+//  WriteRegister(7, 0); 
+//  WriteRegister(8, quarter_milli); // (i.e. 5mS / 0.25mS) = 20
+//  WriteRegister(17, UPDATE); // Global update
+//
+//  delay((step_time*ONE_REVOLUTION)+1100);  //
 }
 
 /***************************************************************************/
